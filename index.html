@@ -3,134 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entendendo o Escopo de Variáveis</title>
+    <title>Escopo de Variáveis: Global, Local e de Bloco</title>
     <style>
+        /* ==================================
+        ESTILOS GERAIS - DARK MODE
+        ================================== */
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 30px;
+            background-color: #0A0A0A; /* Fundo bem escuro */
+            color: #F0F0F0; /* Texto claro */
+            line-height: 1.6;
         }
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #1A1A1A; /* Painel principal escuro */
+            padding: 25px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
         }
-        h1, h2 {
-            color: #0056b3;
-            border-bottom: 2px solid #0056b3;
-            padding-bottom: 10px;
+        h1, h2, h3 {
+            color: #4CAF50; /* Destaque em Verde Neon/Claro */
+            padding-bottom: 5px;
+            margin-top: 30px;
         }
-        .code-block {
-            background-color: #eee;
+        h1 {
+            border-bottom: 3px solid #4CAF50;
+            margin-bottom: 20px;
+        }
+        
+        /* Estilização dos Escopos */
+        .escopo-section {
             padding: 15px;
-            border-radius: 4px;
-            white-space: pre-wrap;
-            font-family: "Courier New", monospace;
+            margin: 20px 0;
+            border-left: 5px solid #64B5F6; /* Borda Azul Suave */
+            background-color: #252525;
+            border-radius: 5px;
+        }
+        .escopo-section h3 {
+            color: #64B5F6; /* Título do escopo em azul */
+            margin-top: 0;
+            border-bottom: 1px solid #64B5F633;
+            padding-bottom: 5px;
+        }
+        
+        /* Bloco de Código */
+        .code-block {
+            background-color: #000000; /* Fundo do código preto absoluto */
+            color: #F4D03F; /* Texto em amarelo para contraste */
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            white-space: pre;
+            overflow-x: auto;
+            border: 1px dashed #4CAF50;
+            font-size: 0.9em;
             margin: 15px 0;
-            border-left: 5px solid #007bff;
         }
         strong {
-            color: #d9534f;
+            color: #E57373; /* Destaque de palavras-chave em vermelho-claro */
         }
-        /* Estilos para o resultado do console */
+        
+        /* Console Resultado */
         #resultado {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: #e9ecef;
+            margin-top: 30px;
+            padding: 15px;
+            border: 2px solid #4CAF50;
+            border-radius: 5px;
+            background-color: #333333;
+            color: #E0E0E0;
             font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔍 O que é Escopo de Variáveis?</h1>
+        <h1>🔍 O Conceito Essencial de Escopo em Programação</h1>
 
-        <p>Em programação, o **Escopo de Variáveis** (do inglês, *Scope*) é o conjunto de regras que define a **visibilidade** e a **acessibilidade** de uma variável em diferentes partes do seu código.</p>
+        <p>O **Escopo de Variáveis** é a definição de **visibilidade** e **acessibilidade** de uma variável em um programa. Ele determina onde no seu código você pode usar, ler ou modificar uma variável.</p>
 
-        <p>Em outras palavras, o escopo determina <strong>onde</strong> uma variável pode ser usada e modificada.</p>
+        <p>Entender o escopo é fundamental para evitar erros como `ReferenceError` e gerenciar o uso de memória.</p>
 
-        <h2>📚 Os Dois Tipos Principais de Escopo</h2>
+        <h2>📚 Os Três Tipos de Escopo (Focando em JavaScript)</h2>
 
-        <p>Embora existam variações (como o Escopo de Bloco em JavaScript com <code>let</code> e <code>const</code>), os dois tipos fundamentais de escopo presentes na maioria das linguagens de programação são:</p>
-
-        <h3>1. Escopo Global</h3>
-        <p>As variáveis declaradas no **Escopo Global** estão fora de qualquer função ou bloco específico. Elas são:</p>
-        <ul>
-            <li>**Acessíveis:** De qualquer lugar do código, incluindo dentro de todas as funções.</li>
-            <li>**Tempo de Vida:** Existem durante todo o tempo de execução do programa.</li>
-        </ul>
+        <div class="escopo-section">
+            <h3>1. Escopo Global</h3>
+            <p>Variáveis declaradas fora de qualquer função ou bloco (ou com a palavra-chave `var` no nível superior do código).</p>
+            <ul>
+                <li><strong>Visibilidade:</strong> Acessível de **qualquer lugar** do programa.</li>
+                <li><strong>Cuidado:</strong> O uso excessivo pode levar a conflitos de nomes e poluir o ambiente global.</li>
+            </ul>
+        </div>
         
-        <h3>2. Escopo Local (ou de Função)</h3>
-        <p>As variáveis declaradas no **Escopo Local** são aquelas criadas dentro de uma função. Elas são:</p>
-        <ul>
-            <li>**Acessíveis:** Apenas dentro da função onde foram criadas.</li>
-            <li>**Tempo de Vida:** São criadas quando a função é chamada e geralmente destruídas (liberadas da memória) quando a função termina.</li>
-        </ul>
+        <div class="escopo-section">
+            <h3>2. Escopo Local (ou de Função)</h3>
+            <p>Variáveis declaradas dentro de uma função. No JavaScript, variáveis criadas com `var`, `let`, ou `const` dentro de uma função têm este escopo.</p>
+            <ul>
+                <li><strong>Visibilidade:</strong> Acessível **somente** dentro da função onde foi declarada.</li>
+                <li><strong>Vida útil:</strong> A variável é criada quando a função é chamada e destruída ao final da execução.</li>
+            </ul>
+        </div>
+
+        <div class="escopo-section">
+            <h3>3. Escopo de Bloco (Moderno)</h3>
+            <p>Introduzido em linguagens modernas e no JavaScript com as palavras-chave **`let`** e **`const`** (ES6+). Um "bloco" é qualquer seção delimitada por chaves `{}` (como em `if`, `for` ou um bloco isolado).</p>
+            <ul>
+                <li><strong>Visibilidade:</strong> Acessível **somente** dentro do bloco `{}` onde foi declarada.</li>
+                <li><strong>Melhor Prática:</strong> É o escopo mais seguro, pois limita a variável ao contexto mais estrito.</li>
+            </ul>
+        </div>
 
         <h2>💡 Demonstração em JavaScript</h2>
         
-        <p>O código JavaScript abaixo demonstra a diferença entre os dois escopos. Tente abrir o **Console do Navegador** (geralmente pressionando F12 e indo na aba "Console") para ver os resultados.</p>
+        <p>Abaixo, veja um exemplo prático. Lembre-se de abrir o **Console do Navegador (F12)** para ver os logs e o erro esperado!</p>
 
         <div class="code-block">
-            <p>// VARIÁVEL GLOBAL: Declarada fora de qualquer função</p>
-            <p>let mensagemGlobal = "Eu sou visível em todo o programa!";</p>
-
-            <p>function minhaFuncao() {</p>
-            <p style="text-indent: 20px;">// VARIÁVEL LOCAL: Declarada dentro da função</p>
-            <p style="text-indent: 20px;">let saudacaoLocal = "Olá do escopo local!";</p>
-            <p style="text-indent: 20px;">console.log("Dentro da função (Local):", saudacaoLocal);</p>
-            <p style="text-indent: 20px;">console.log("Dentro da função (Global):", mensagemGlobal);</p>
-            <p>}</p>
-
-            <p>minhaFuncao();</p>
-
-            <p>console.log("Fora da função (Global):", mensagemGlobal);</p>
-            <p>// console.log("Fora da função (Local):", saudacaoLocal); <strong><- Isso geraria um erro de "ReferenceError"!</strong></p>
+            let escopoGlobal = "Sou Global (let)."; // 1. Escopo Global
+            
+            function demonstrarEscopos() {
+              var escopoFuncao = "Sou Local (var) - Acessível na função."; // 2. Escopo de Função
+            
+              if (true) {
+                let escopoBloco = "Sou de Bloco (let) - Acessível só no if."; // 3. Escopo de Bloco
+                console.log("Dentro do Bloco:", escopoBloco); // ✅ OK
+              }
+              
+              // console.log("Fora do Bloco:", escopoBloco); // ❌ ERRO: ReferenceError
+              
+              console.log("Dentro da Função (Local):", escopoFuncao); // ✅ OK
+              console.log("Dentro da Função (Global):", escopoGlobal); // ✅ OK
+            }
+            
+            demonstrarEscopos();
+            
+            console.log("Fora da Função (Global):", escopoGlobal); // ✅ OK
+            // console.log("Fora da Função (Local):", escopoFuncao); // ❌ ERRO: ReferenceError
         </div>
 
         <div id="resultado">
-            O resultado da execução está no <strong>Console do Navegador (F12)</strong>.
+            O resultado da execução está sendo exibido no <strong>Console do Navegador (F12)</strong>.
         </div>
     </div>
 
     <script>
-        // VARIÁVEL GLOBAL: Declarada fora de qualquer função
-        let mensagemGlobal = "Eu sou visível em todo o programa!";
-
-        function minhaFuncao() {
-            // VARIÁVEL LOCAL: Declarada dentro da função
-            let saudacaoLocal = "Olá do escopo local!";
-            
-            console.log("--- Execução da minhaFuncao() ---");
-            console.log("Dentro da função (Local):", saudacaoLocal);
-            console.log("Dentro da função (Global):", mensagemGlobal);
-            // Podemos acessar a global aqui.
-        }
-
-        // Chamada da função
-        minhaFuncao();
-
-        // Tentativa de acesso fora da função
-        console.log("--- Execução Fora da Função ---");
-        console.log("Fora da função (Global):", mensagemGlobal);
+        // 1. Escopo Global
+        let escopoGlobal = "Sou Global (let).";
         
-        // Se você remover os comentários da linha abaixo, verá o erro no console:
-        // console.log("Fora da função (Local - ERRO ESPERADO):", saudacaoLocal);
+        function demonstrarEscopos() {
+          // 2. Escopo de Função
+          var escopoFuncao = "Sou Local (var) - Acessível na função.";
+        
+          if (true) {
+            // 3. Escopo de Bloco
+            let escopoBloco = "Sou de Bloco (let) - Acessível só no if.";
+            console.log("Dentro do Bloco:", escopoBloco); 
+          }
+          
+          // Se descomentar a linha abaixo, o script para de rodar por causa do ReferenceError
+          // console.log("Fora do Bloco:", escopoBloco); 
+          
+          console.log("Dentro da Função (Local):", escopoFuncao);
+          console.log("Dentro da Função (Global):", escopoGlobal);
+        }
+        
+        demonstrarEscopos();
+        
+        console.log("Fora da Função (Global):", escopoGlobal);
+        // Se descomentar a linha abaixo, o script para de rodar por causa do ReferenceError
+        // console.log("Fora da Função (Local):", escopoFuncao);
         
         // Atualiza a div para feedback visual
         document.getElementById('resultado').innerHTML = 
-            '<strong>Resultado no Console (F12):</strong><br>' + 
-            'Dentro da função (Local): Olá do escopo local!<br>' +
-            'Dentro da função (Global): Eu sou visível em todo o programa!<br>' +
-            'Fora da função (Global): Eu sou visível em todo o programa!<br>' +
-            '<em>(A variável local não pode ser acessada aqui, o que prova o escopo local!)</em>';
+            '<strong>Resultados Chave no Console (F12):</strong><br>' + 
+            '1. Variáveis Globais são acessadas em todo lugar. ✅<br>' +
+            '2. Variáveis de Função (Locais) **NÃO** são acessadas fora da função. ❌<br>' +
+            '3. Variáveis de Bloco **NÃO** são acessadas fora do seu bloco `if` ou `for`. ❌';
 
     </script>
 </body>
